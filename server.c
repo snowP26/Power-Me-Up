@@ -107,37 +107,37 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
-    // Create a socket for incoming connections
+    // Creating a socket
     server_sock = socket(AF_INET, SOCK_STREAM, 0);
     if (server_sock < 0)  {
        die_with_error("Error: socket() Failed.");
     }
 
-    // Bind socket to a port
+    // Binding socket to port
     bzero((char *) &server_addr, sizeof(server_addr));
     port_no = atoi(argv[1]);
-    server_addr.sin_family = AF_INET; // Internet address 
-    server_addr.sin_addr.s_addr = INADDR_ANY; // Any incoming interface
-    server_addr.sin_port = htons(port_no); // Local port
+    server_addr.sin_family = AF_INET;  
+    server_addr.sin_addr.s_addr = INADDR_ANY; 
+    server_addr.sin_port = htons(port_no);
 
      if (bind(server_sock, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) {
         die_with_error("Error: bind() Failed.\n");
     }
 
-    // Mark the socket so it will listen for incoming connections
+    // listen for 1 incoming connection
     listen(server_sock, 1);
     printf("Server listening to port %d ...\n", port_no);
 
     printf("Waiting for connection(s) ...\n");
 
-    // Accept a client connection
+    // Accept client request for connection
 	client_len = sizeof(client_addr);
 	client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_len);
 	if (client_sock < 0) {
 	    die_with_error("Error: accept() Failed.\n");
 	}
 
-    printf("Client succesfully connected ... Starting the game.\n");
+    printf("Client succesfully connected ... GAME START!.\n");
 
     system("clear"); 
 
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]){
     p2 = buffer[0];
     srand(time(0) + getpid()); // RANDOMIZER SEEDING
 
-    // Communicate
+    // Communicate with client
     while(1) {
          
         // player 1 diceroll
@@ -224,7 +224,6 @@ int main(int argc, char *argv[]){
            
             displayTable(gameBoard, p1Pos, p2Pos, p1, p2);
             printf("Player 1 rolled %d.\n", diceRoll);
-            // sleep(1);
 
             // Send the position of player 1
 		    n = send(client_sock, &p1Pos, sizeof(p1Pos), 0);
@@ -238,18 +237,20 @@ int main(int argc, char *argv[]){
 	            die_with_error("Error: send() Failed.\n");
             }
 
-            // Receive the p2 pos
+            // Receive the position of player 2
 	        n = recv(client_sock, buffer, sizeof(buffer) - 1, 0);
 	        if (n < 0) {
 	            die_with_error("Error: recv() Failed.\n");
 	        }
+	    // Convert string to integer
             p2Pos = *(int *)buffer;
              
-            // Receive the p1 pos
+            // Receive the position of player 1
             n = recv(client_sock, buffer, sizeof(buffer) - 1, 0);
 	        if (n < 0) {
 	            die_with_error("Error: recv() Failed.\n");
 	        }
+	    // Convert string to integer
             p1Pos = *(int *)buffer;
              
         }

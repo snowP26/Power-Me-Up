@@ -190,7 +190,7 @@ int main(int argc, char *argv[]){
     srand(time(0) + getpid()); // RANDOMIZER SEEDING
 
     while(1) {
- 
+         
         while (p1Pos != 100 || p2Pos != 100) {
             if(p1Pos == 100){
                 displayTable(gameBoard, p1Pos, p2Pos, p1, p2);
@@ -210,6 +210,7 @@ int main(int argc, char *argv[]){
 	            die_with_error("Error: recv() Failed.\n");
 	        }
             p1Pos = *(int *)buffer;
+             
 
             // Receive the updated position of player 2
             n = recv(client_sock, buffer, sizeof(buffer) - 1, 0);
@@ -217,7 +218,8 @@ int main(int argc, char *argv[]){
 	            die_with_error("Error: recv() Failed.\n");
 	        }
             p2Pos = *(int *)buffer;
-
+             
+            system("clear");
             displayTable(gameBoard, p1Pos, p2Pos, p1, p2);
             printf("Player 2 please roll the dice.\n(Press Enter.) >");
 

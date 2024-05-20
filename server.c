@@ -184,7 +184,7 @@ int main(int argc, char *argv[]){
 
     // Communicate
     while(1) {
-
+         
         // player 1 diceroll
         while (p1Pos != 100 || p2Pos != 100) {
             system("clear");
@@ -244,13 +244,14 @@ int main(int argc, char *argv[]){
 	            die_with_error("Error: recv() Failed.\n");
 	        }
             p2Pos = *(int *)buffer;
-
+             
             // Receive the p1 pos
             n = recv(client_sock, buffer, sizeof(buffer) - 1, 0);
 	        if (n < 0) {
 	            die_with_error("Error: recv() Failed.\n");
 	        }
             p1Pos = *(int *)buffer;
+             
         }
 
         

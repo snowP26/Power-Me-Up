@@ -60,32 +60,26 @@ bool powerUp(int roll, bool powerBoard[10][10], int *p1Pos, int *p2Pos) {
                 case 1:
                     (*p2Pos)++;
                     printf("Added 1 to your roll!\n");
-                    // sleep(1);
                     break;
                 case 2:
                     (*p2Pos) += 5;
                     printf("Added 5 to your roll!\n");
-                    // sleep(1);
                     break;
                 case 3:
                     (*p2Pos) += roll;
                     printf("Multiplied your roll by 2!\n");
-                    // sleep(1);
                     break;
                 case 4:
                     *p2Pos = *p1Pos;
                     printf("Teleported you to your opponent!\n");
-                    // sleep(1);
                     break;
                 case 5:
                     (*p1Pos) += 3;
                     printf("Bad luck! Your opponent moved 3 bonus tiles!\n");
-                    // sleep(1);
                     break;
                 case 6:
                     (*p1Pos) += 5;
                     printf("Bad luck! Your opponent moved 5 bonus tiles!\n");
-                    // sleep(1);
                     break;
             }
 
@@ -209,6 +203,7 @@ int main(int argc, char *argv[]){
 	        if (n < 0) {
 	            die_with_error("Error: recv() Failed.\n");
 	        }
+	    // Convert string to integer
             p1Pos = *(int *)buffer;
              
 
@@ -217,6 +212,7 @@ int main(int argc, char *argv[]){
 	        if (n < 0) {
 	            die_with_error("Error: recv() Failed.\n");
 	        }
+	    // Convert string to integer
             p2Pos = *(int *)buffer;
              
             system("clear");
@@ -245,11 +241,12 @@ int main(int argc, char *argv[]){
             printf("Player 2 rolled %d.\n", diceRoll);
             // sleep(1);
 
-            // Send the char input of the server
+            // Send the position of player 2 
             n = send(client_sock, &p2Pos, sizeof(p2Pos), 0);
             if (n < 0) {
                 die_with_error("Error: send() Failed.\n");
             }
+	    // Send the position of player 1
             n = send(client_sock, &p1Pos, sizeof(p1Pos), 0);
             if (n < 0) {
                 die_with_error("Error: send() Failed.\n");
